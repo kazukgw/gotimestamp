@@ -4,10 +4,10 @@ import (
 	"time"
 )
 
-var local time.Location
+var location *time.Location
 
-func SetLocal(loc time.Location) {
-	local = loc
+func SetLocation(loc *time.Location) {
+	location = loc
 }
 
 var format string
@@ -34,6 +34,6 @@ func (t *TimeStamp) UpdateTimeStamp() {
 }
 
 func (t *TimeStamp) ComputeLocalTime() {
-	t.CreatedAtInLocal = t.CreatedAt.In(local).format(format)
-	t.UpdatedAtInLocal = t.UpdatedAt.In(local).format(format)
+	t.CreatedAtInLocal = t.CreatedAt.In(location).Format(format)
+	t.UpdatedAtInLocal = t.UpdatedAt.In(location).Format(format)
 }
