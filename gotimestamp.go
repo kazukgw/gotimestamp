@@ -4,16 +4,16 @@ import (
 	"time"
 )
 
-var location *time.Location
+var Location *time.Location
 
 func SetLocation(loc *time.Location) {
-	location = loc
+	Location = loc
 }
 
-var format string
+var Format string
 
 func SetFormat(f string) {
-	format = f
+	Format = f
 }
 
 type TimeStamp struct {
@@ -34,17 +34,22 @@ func (t *TimeStamp) UpdateTimeStamp() {
 }
 
 func (t *TimeStamp) ComputeLocalTime() {
-	t.CreatedAtInLocal = t.CreatedAt.In(location).Format(format)
-	t.UpdatedAtInLocal = t.UpdatedAt.In(location).Format(format)
+	t.CreatedAtInLocal = t.CreatedAt.In(Location).Format(Format)
+	t.UpdatedAtInLocal = t.UpdatedAt.In(Location).Format(Format)
+}
+
+func (t *TimeStamp) ComputeLocalTimeWithLocation(l *time.Location) {
+	t.CreatedAtInLocal = t.CreatedAt.In(l).Format(Format)
+	t.UpdatedAtInLocal = t.UpdatedAt.In(l).Format(Format)
 }
 
 func (t *TimeStamp) ParseInLocation(createdat, updatedat string) error {
 	var err error
 	if createdat != "" {
-		t.CreatedAt, err = time.ParseInLocation(format, createdat, location)
+		t.CreatedAt, err = time.ParseInLocation(Format, createdat, Location)
 	}
 	if updatedat != "" {
-		t.UpdatedAt, err = time.ParseInLocation(format, updatedat, location)
+		t.UpdatedAt, err = time.ParseInLocation(Format, updatedat, Location)
 	}
 	return err
 }
